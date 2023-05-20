@@ -2,17 +2,13 @@ import React, { useState } from "react";
 import Form from "../Components/Form";
 import { fetchCountriesByContinent } from "../API/api";
 
-interface Name {
-  common: string;
-}
-
 interface Country {
-  name: Name;
+  name: string;
   continent: string;
 }
 
 interface CountryDetails {
-  name?: Name;
+  name?: string;
   capital?: string;
   population?: number;
   currency?: string;
@@ -36,13 +32,28 @@ export default function Home() {
     setNumberOfCountries(numberOfCountries);
   };
 
+  const selectCountries = (fetchedCountries: Country[]): Country[] => {
+    // Shuffle the fetchedCountries array randomly
+    const shuffledCountries = fetchedCountries.sort(() => Math.random() - 0.5);
+
+    // Select the specified number of random countries
+    const randomCountries = shuffledCountries.slice(0, numberOfCountries);
+
+    // Sort the random countries in alphabetical order by name
+    const sortedCountries = randomCountries.sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
+    return sortedCountries;
+  };
+
   const fetchCountries = async () => {
     setLoading(true);
     try {
       const fetchedCountries = await fetchCountriesByContinent(
         selectedContinent
       );
-      setCountries(fetchedCountries);
+      const selectedCountries = selectCountries(fetchedCountries);
+      setCountries(selectedCountries);
       setError("");
     } catch (err) {
       if (err instanceof Error) {
