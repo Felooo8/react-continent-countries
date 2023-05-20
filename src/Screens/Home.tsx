@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Form from "../Components/Form";
+import CountryDetail from "../Components/CountryDetail";
 import { fetchCountriesByContinent, fetchCountryDetails } from "../API/api";
 
 interface Country {
@@ -7,7 +8,7 @@ interface Country {
   continent: string;
 }
 
-type CountryDetails = {
+export type CountryDetails = {
   capital: string[];
   currencies: { [code: string]: { [key: string]: string } };
   languages: { [code: string]: string };
@@ -41,11 +42,15 @@ export default function Home() {
       const countryDetailsPromises = countries.map((country) =>
         fetchCountryDetails(country.name).catch((error) => {
           console.error(`Error fetching details for ${country.name}:`, error);
+          return {};
         })
       );
 
-      const countryDetails = await Promise.all(countryDetailsPromises);
-      setCountryDetails(countryDetails);
+      const countryDetailsResponse = (
+        await Promise.all(countryDetailsPromises)
+      ).flat();
+
+      setCountryDetails(countryDetailsResponse);
     } catch (err) {
       if (err instanceof Error) {
         console.log(err.message);
@@ -54,6 +59,8 @@ export default function Home() {
         console.log("Unexpected error", err);
         setError("Unexpected error");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -93,9 +100,13 @@ export default function Home() {
   const handleFetching = () => {
     setLoading(true);
     fetchCountries();
-    fetchDetails();
-    setLoading(false);
   };
+
+  useEffect(() => {
+    if (countries.length > 0) {
+      fetchDetails();
+    }
+  }, [countries]);
 
   return (
     <div style={{ padding: "10px" }}>
@@ -107,6 +118,15 @@ export default function Home() {
         toggleSetNumberOfCountries={toggleSetNumberOfCountries}
         toggleFetch={handleFetching}
       />
+      {loading && <p>Loading...</p>}
+      {countryDetails.length > 0 ? (
+        <div>
+          <h2>Country Details</h2>
+          {countryDetails.map((country, index) => (
+            <CountryDetail key={index} country={country} />
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 }
