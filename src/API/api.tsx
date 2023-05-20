@@ -30,3 +30,21 @@ export const fetchCountriesByContinent = async (continent: string) => {
     throw new Error("An error occurred while fetching countries");
   }
 };
+
+const fields = "name,capital,population,currencies,subregion,languages";
+
+export const fetchCountryDetails = async (countryName: string) => {
+  try {
+    const response = await fetch(
+      `https://restcountries.com/v3.1/name/${countryName}?fields=${fields}`
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch country details");
+    }
+    const countryDetails = await response.json();
+    return countryDetails;
+  } catch (error) {
+    console.error(error);
+    throw new Error("An error occurred while fetching country details");
+  }
+};

@@ -1,20 +1,24 @@
 import React, { useState } from "react";
 import Form from "../Components/Form";
-import { fetchCountriesByContinent } from "../API/api";
+import { fetchCountriesByContinent, fetchCountryDetails } from "../API/api";
 
 interface Country {
   name: string;
   continent: string;
 }
 
-interface CountryDetails {
-  name?: string;
-  capital?: string;
-  population?: number;
-  currency?: string;
-  subregion?: string;
-  languages?: string[];
-}
+type CountryDetails = {
+  capital: string[];
+  currencies: { [code: string]: { [key: string]: string } };
+  languages: { [code: string]: string };
+  name: {
+    common: string;
+    official: string;
+    nativeName: { [code: string]: string };
+  };
+  population: number;
+  subregion: string;
+};
 
 export default function Home() {
   const [selectedContinent, setSelectedContinent] = useState<string>("");
@@ -32,6 +36,27 @@ export default function Home() {
     setNumberOfCountries(numberOfCountries);
   };
 
+  const fetchDetails = async () => {
+    try {
+      const countryDetailsPromises = countries.map((country) =>
+        fetchCountryDetails(country.name).catch((error) => {
+          console.error(`Error fetching details for ${country.name}:`, error);
+        })
+      );
+
+      const countryDetails = await Promise.all(countryDetailsPromises);
+      setCountryDetails(countryDetails);
+    } catch (err) {
+      if (err instanceof Error) {
+        console.log(err.message);
+        setError(err.message);
+      } else {
+        console.log("Unexpected error", err);
+        setError("Unexpected error");
+      }
+    }
+  };
+
   const selectCountries = (fetchedCountries: Country[]): Country[] => {
     // Shuffle the fetchedCountries array randomly
     const shuffledCountries = fetchedCountries.sort(() => Math.random() - 0.5);
@@ -47,7 +72,6 @@ export default function Home() {
   };
 
   const fetchCountries = async () => {
-    setLoading(true);
     try {
       const fetchedCountries = await fetchCountriesByContinent(
         selectedContinent
@@ -64,6 +88,12 @@ export default function Home() {
         setError("Unexpected error");
       }
     }
+  };
+
+  const handleFetching = () => {
+    setLoading(true);
+    fetchCountries();
+    fetchDetails();
     setLoading(false);
   };
 
@@ -75,7 +105,7 @@ export default function Home() {
         toggleSelectContinent={toggleSelectContinent}
         numberOfCountries={numberOfCountries}
         toggleSetNumberOfCountries={toggleSetNumberOfCountries}
-        toggleFetch={fetchCountries}
+        toggleFetch={handleFetching}
       />
     </div>
   );
