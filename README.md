@@ -10,8 +10,8 @@ Follow the steps below to pull the code, compile/assemble it, run/deploy the sol
 
 Make sure you have the following software installed on your system:
 
-- Node.js
-- Git
+- Node.js https://nodejs.org/en/download
+- Git https://git-scm.com/downloads
 
 ### Step 1: Pull the Code
 
