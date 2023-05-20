@@ -1,10 +1,15 @@
-import React, { useEffect, useState } from "react";
-import Form from "../Components/Form";
-import CountryDetail from "../Components/CountryDetail";
-import { fetchCountriesByContinent, fetchCountryDetails } from "../API/api";
+import { Alert, Fade, Slide, SlideProps, Snackbar } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
-import { Fade } from "@mui/material";
+import React, { SyntheticEvent, useEffect, useState } from "react";
+
+import { fetchCountriesByContinent, fetchCountryDetails } from "../API/api";
+import CountryDetail from "../Components/CountryDetail";
+import Form from "../Components/Form";
 import Skeleton from "../Components/Skeleton";
+
+function SlideTransition(props: JSX.IntrinsicAttributes & SlideProps) {
+  return <Slide {...props} direction="left" />;
+}
 
 interface Country {
   name: string;
@@ -31,6 +36,10 @@ export default function Home() {
   const [countryDetails, setCountryDetails] = useState<CountryDetails[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const [loadingCountryDetails, setLoadingCountryDetails] = useState<boolean>(
+    false
+  );
+  const [openSnackBar, setOpenSnackBar] = useState<boolean>(false);
 
   const toggleSelectContinent = (continent: string) => {
     setSelectedContinent(continent);
@@ -42,13 +51,13 @@ export default function Home() {
 
   const fetchDetails = async () => {
     try {
+      setLoadingCountryDetails(true); // Set loading state for country details
       const countryDetailsPromises = countries.map((country) =>
         fetchCountryDetails(country.name).catch((error) => {
           console.error(`Error fetching details for ${country.name}:`, error);
-          return {};
+          throw error;
         })
       );
-
       const countryDetailsResponse = (
         await Promise.all(countryDetailsPromises)
       ).flat();
@@ -58,12 +67,13 @@ export default function Home() {
       if (err instanceof Error) {
         console.log(err.message);
         setError(err.message);
+        setOpenSnackBar(true);
       } else {
         console.log("Unexpected error", err);
         setError("Unexpected error");
       }
     } finally {
-      setLoading(false);
+      setLoadingCountryDetails(false); // Reset loading state for country details
     }
   };
 
@@ -93,6 +103,7 @@ export default function Home() {
       if (err instanceof Error) {
         console.log(err.message);
         setError(err.message);
+        setOpenSnackBar(true);
       } else {
         console.log("Unexpected error", err);
         setError("Unexpected error");
@@ -113,8 +124,42 @@ export default function Home() {
     }
   }, [countries]);
 
+  const handleCloseSnackBar = (
+    event: Event | SyntheticEvent<Element, Event>,
+    reason: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackBar(false);
+  };
+
+  const handleCloseSnackBarAlert = (event: SyntheticEvent<Element, Event>) => {
+    setOpenSnackBar(false);
+  };
+
   return (
     <div style={{ padding: "10px" }}>
+      <Snackbar
+        open={openSnackBar}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackBar}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+        TransitionComponent={SlideTransition}
+      >
+        <Alert
+          onClose={handleCloseSnackBarAlert}
+          severity="error"
+          sx={{ width: "100%" }}
+          elevation={6}
+          variant="filled"
+        >
+          {error}
+        </Alert>
+      </Snackbar>
       <h1>Discover Countries by Continent</h1>
       <Form
         selectedContinent={selectedContinent}
@@ -124,7 +169,7 @@ export default function Home() {
         toggleFetch={handleFetching}
         buttonDisabled={loading}
       />
-      {loading && <Skeleton />}
+      {loading || (loadingCountryDetails && <Skeleton />)}
       {countryDetails.length > 0 ? (
         <div>
           <h2>Country Details</h2>
