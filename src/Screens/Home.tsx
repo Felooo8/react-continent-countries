@@ -190,7 +190,7 @@ export default function Home() {
         numberOfCountries={numberOfCountries}
         toggleSetNumberOfCountries={toggleSetNumberOfCountries}
         toggleFetch={handleFetching}
-        buttonDisabled={loading}
+        buttonDisabled={refreshing}
       />
       {(loading || loadingCountryDetails) && <Skeleton />}
       {countryDetails.length > 0 && !loading && !loadingCountryDetails ? (

@@ -1,4 +1,4 @@
-import { Button, Input } from "@mui/material";
+import { Box, Button, Input } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 import InputLabel from "@mui/material/InputLabel";
@@ -42,10 +42,12 @@ export default function Form(props: Props) {
 
   return (
     <React.Fragment>
-      <form
+      <Box
+        component="form"
         onSubmit={handleFetch}
         style={{
           display: "grid",
+          rowGap: "16px",
         }}
       >
         <label>Select a continent</label>
@@ -86,11 +88,14 @@ export default function Form(props: Props) {
         <Button
           disabled={props.buttonDisabled}
           variant="contained"
+          size="large"
           type="submit"
+          fullWidth
+          sx={{ mt: 3, mb: 2, fontWeight: 600 }}
         >
           Get countries!
         </Button>
-      </form>
+      </Box>
     </React.Fragment>
   );
 }

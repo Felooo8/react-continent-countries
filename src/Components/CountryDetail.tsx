@@ -13,9 +13,10 @@ export default function CountryDetail(props: Props) {
   const { country } = props;
 
   const handleExpand = () => {
-    props.toggleAccordion(props.country.name.common);};
+    props.toggleAccordion(props.country.name.common);
+  };
 
-  
+
   const renderField = (label: string, value: string | string[]) => {
     if (Array.isArray(value) && value.length === 0) {
       return (
@@ -37,25 +38,25 @@ export default function CountryDetail(props: Props) {
   };
 
 
-  return (<Accordion elevation={3} style={{padding: "16px"}}  expanded={props.expanded === props.country.name.common} onChange={()=>handleExpand()}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            <Typography>{country.name.common}</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <div className="country-info">
-              {renderField("Official name", country.name.official)}
-              {renderField("Capital", country.capital.join(", "))}
-              {renderField("Population", country.population.toLocaleString())}
-              {renderField("Subregion", country.subregion)}
-              {renderField("Currencies", Object.keys(country.currencies))}
-              {renderField("Languages", Object.values(country.languages))}
-          </div>
-          </AccordionDetails>
-        </Accordion>)
+  return (<Accordion elevation={3} style={{ padding: "16px" }} expanded={props.expanded === props.country.name.common} onChange={() => handleExpand()}>
+    <AccordionSummary
+      expandIcon={<ExpandMoreIcon />}
+      aria-controls="panel1a-content"
+      id="panel1a-header"
+    >
+      <Typography>{country.name.common}</Typography>
+    </AccordionSummary>
+    <AccordionDetails>
+      <div className="country-info">
+        {renderField("Official name", country.name.official)}
+        {renderField("Capital", country.capital.join(", "))}
+        {renderField("Population", country.population.toLocaleString())}
+        {renderField("Subregion", country.subregion)}
+        {renderField("Currencies", Object.keys(country.currencies))}
+        {renderField("Languages", Object.values(country.languages))}
+      </div>
+    </AccordionDetails>
+  </Accordion>)
 }
 const fieldRowStyle = {
   display: "flex",
