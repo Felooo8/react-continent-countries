@@ -3,7 +3,8 @@ import Form from "../Components/Form";
 import CountryDetail from "../Components/CountryDetail";
 import { fetchCountriesByContinent, fetchCountryDetails } from "../API/api";
 import LinearProgress from "@mui/material/LinearProgress";
-import { CircularProgress, Fade } from "@mui/material";
+import { Fade } from "@mui/material";
+import Skeleton from "../Components/Skeleton";
 
 interface Country {
   name: string;
@@ -96,6 +97,8 @@ export default function Home() {
         console.log("Unexpected error", err);
         setError("Unexpected error");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -119,18 +122,9 @@ export default function Home() {
         numberOfCountries={numberOfCountries}
         toggleSetNumberOfCountries={toggleSetNumberOfCountries}
         toggleFetch={handleFetching}
+        buttonDisabled={loading}
       />
-      {loading && (
-        <div
-          style={{
-            zIndex: "10",
-          }}
-        >
-          <Fade in={loading} unmountOnExit>
-            <CircularProgress sx={{ height: "8px" }} />
-          </Fade>
-        </div>
-      )}
+      {loading && <Skeleton />}
       {countryDetails.length > 0 ? (
         <div>
           <h2>Country Details</h2>

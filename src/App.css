@@ -51,3 +51,8 @@
 .country-info p {
   margin-bottom: 8px;
 }
+
+.skeletons span {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}

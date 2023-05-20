@@ -22,6 +22,7 @@ interface Props {
   toggleSetNumberOfCountries: (numberOfCountries: number) => void;
   numberOfCountries: number;
   toggleFetch: () => void;
+  buttonDisabled: boolean;
 }
 
 export default function Form(props: Props) {
@@ -84,7 +85,11 @@ export default function Form(props: Props) {
             }}
           />
         </FormControl>
-        <Button variant="contained" type="submit">
+        <Button
+          disabled={props.buttonDisabled}
+          variant="contained"
+          type="submit"
+        >
           Get countries!
         </Button>
       </form>

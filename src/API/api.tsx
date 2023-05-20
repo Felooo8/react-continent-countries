@@ -44,7 +44,6 @@ export const fetchCountryDetails = async (countryName: string) => {
     const countryDetails = await response.json();
     return countryDetails;
   } catch (error) {
-    console.error(error);
     throw new Error("An error occurred while fetching country details");
   }
 };
