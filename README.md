@@ -1,46 +1,54 @@
-# Getting Started with Create React App
+# Country Explorer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Country Explorer is a web application that allows users to discover and explore countries based on continents. Users can select a continent, specify the number of countries to display, and retrieve country details such as capital, population, currencies, and languages.
 
-## Available Scripts
+## Instructions
 
-In the project directory, you can run:
+Follow the steps below to pull the code, compile/assemble it, run/deploy the solution, and use the application.
+
+### Prerequisites
+
+Make sure you have the following software installed on your system:
+
+- Node.js
+- Git
+
+### Step 1: Pull the Code
+
+To get the code for Country Explorer, you can either clone or fork the project repository.
+
+To clone the repository using Git, open your terminal/command prompt and run the following command:
+
+### `git clone https://github.com/Felooo8/react-continent-countries.git`
+
+### Step 2: Compile/Assemble the Code
+
+Once you have the code on your local machine, navigate to the project directory using the terminal/command prompt:
+
+### `cd react-continent-countries`
+
+Next, install the project dependencies by running the following command:
+
+### `npm install`
+
+This will download and install all the required dependencies listed in the package.json file.
+
+### Step 3: Run/Deploy the Solution
+
+To run the Country Explorer application locally, use the following command:
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+This will start the development server and launch the application in your default web browser. You can access it at `http://localhost:3000`.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Step 4: Using the Application
 
-### `npm test`
+- On the Country Explorer homepage, select a continent from the dropdown menu.
+- Specify the number of countries to display by entering a value in the "Number of countries" input field. The value should be between 2 and 10.
+- Click the "Get countries!" button to fetch and display the country details.
+- The country details will be shown in an accordion format. Click on an accordion to expand/collapse the country details.
+- Explore the different country details such as official name, capital, population, subregion, currencies, and languages.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+That's it! You have successfully pulled the code, compiled/assembled the project, run/deployed the solution, and learned how to use the Country Explorer application.
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Feel free to explore more countries and continents and enjoy your journey of discovering the world!
