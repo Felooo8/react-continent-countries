@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Form from "../Components/Form";
 import CountryDetail from "../Components/CountryDetail";
 import { fetchCountriesByContinent, fetchCountryDetails } from "../API/api";
+import LinearProgress from "@mui/material/LinearProgress";
+import { CircularProgress, Fade } from "@mui/material";
 
 interface Country {
   name: string;
@@ -118,7 +120,17 @@ export default function Home() {
         toggleSetNumberOfCountries={toggleSetNumberOfCountries}
         toggleFetch={handleFetching}
       />
-      {loading && <p>Loading...</p>}
+      {loading && (
+        <div
+          style={{
+            zIndex: "10",
+          }}
+        >
+          <Fade in={loading} unmountOnExit>
+            <CircularProgress sx={{ height: "8px" }} />
+          </Fade>
+        </div>
+      )}
       {countryDetails.length > 0 ? (
         <div>
           <h2>Country Details</h2>
@@ -127,6 +139,19 @@ export default function Home() {
           ))}
         </div>
       ) : null}
+      <div
+        style={{
+          position: "fixed",
+          left: "0",
+          right: "0",
+          bottom: "0",
+          zIndex: "10",
+        }}
+      >
+        <Fade in={loading} unmountOnExit>
+          <LinearProgress sx={{ height: "8px" }} />
+        </Fade>
+      </div>
     </div>
   );
 }
