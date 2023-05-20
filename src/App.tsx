@@ -1,6 +1,8 @@
-import React from "react";
 import "./App.css";
+
+import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
 import Home from "./Screens/Home";
 
 export default function App() {

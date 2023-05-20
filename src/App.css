@@ -37,21 +37,6 @@
   }
 }
 
-.country-card {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 16px;
-}
-
-.country-card h3 {
-  margin-top: 0;
-}
-
-.country-info p {
-  margin-bottom: 8px;
-}
-
 .skeletons span {
   margin-left: auto !important;
   margin-right: auto !important;

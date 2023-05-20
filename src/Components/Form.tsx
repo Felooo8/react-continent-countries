@@ -46,8 +46,6 @@ export default function Form(props: Props) {
         onSubmit={handleFetch}
         style={{
           display: "grid",
-          margin: "auto",
-          maxWidth: "500px",
         }}
       >
         <label>Select a continent</label>
@@ -70,7 +68,7 @@ export default function Form(props: Props) {
           </Select>
           <FormHelperText>Required</FormHelperText>
         </FormControl>
-        <label>Number of countries to display</label>
+        <label>Number of countries to display (2-10)</label>
         <FormControl sx={{ m: 1, minWidth: 120 }}>
           <InputLabel>Number of countries</InputLabel>
 

@@ -2,8 +2,7 @@ import * as React from "react";
 import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
 
-const HEIGHT_HEADER = 30;
-const HEIGHT = 200;
+const HEIGHT = 100;
 const WIDTH = 400;
 
 export default function Variants() {
@@ -16,17 +15,24 @@ export default function Variants() {
       <Skeleton
         variant="rounded"
         animation="wave"
-        height={HEIGHT_HEADER}
-        width={WIDTH}
+        height={HEIGHT}
+        style={{ width: "90%" }}
       />
-      <Skeleton variant="rounded" width={WIDTH} height={HEIGHT} />
+      <Skeleton variant="rounded" height={HEIGHT} style={{ width: "90%" }} />
       <Skeleton
         variant="rounded"
         animation="wave"
-        height={HEIGHT_HEADER}
-        width={WIDTH}
+        height={HEIGHT}
+        style={{ width: "90%" }}
       />
-      <Skeleton variant="rounded" width={WIDTH} height={HEIGHT} />
+      <Skeleton variant="rounded" height={HEIGHT} style={{ width: "90%" }} />
+      <Skeleton
+        variant="rounded"
+        animation="wave"
+        height={HEIGHT}
+        style={{ width: "90%" }}
+      />
+      <Skeleton variant="rounded" height={HEIGHT} style={{ width: "90%" }} />
     </Stack>
   );
 }

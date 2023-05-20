@@ -7,6 +7,8 @@ import CountryDetail from "../Components/CountryDetail";
 import Form from "../Components/Form";
 import Skeleton from "../Components/Skeleton";
 
+const PROGRESS_ANIMATION_TIME = 1000;
+
 function SlideTransition(props: JSX.IntrinsicAttributes & SlideProps) {
   return <Slide {...props} direction="left" />;
 }
@@ -39,6 +41,10 @@ export default function Home() {
   const [loadingCountryDetails, setLoadingCountryDetails] = useState<boolean>(
     false
   );
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const timer = React.useRef<number>();
+  const [expanded, setExpanded] = React.useState<string>("");
+
   const [openSnackBar, setOpenSnackBar] = useState<boolean>(false);
 
   const toggleSelectContinent = (continent: string) => {
@@ -48,9 +54,17 @@ export default function Home() {
   const toggleSetNumberOfCountries = (numberOfCountries: number) => {
     setNumberOfCountries(numberOfCountries);
   };
+  const toggleAccordion = (panel: string) => {
+    if (panel === expanded) {
+      setExpanded("");
+      return;
+    }
+    setExpanded(panel);
+  };
 
   const fetchDetails = async () => {
     try {
+      setRefreshing(true);
       setLoadingCountryDetails(true); // Set loading state for country details
       const countryDetailsPromises = countries.map((country) =>
         fetchCountryDetails(country.name).catch((error) => {
@@ -63,6 +77,7 @@ export default function Home() {
       ).flat();
 
       setCountryDetails(countryDetailsResponse);
+      setError("");
     } catch (err) {
       if (err instanceof Error) {
         console.log(err.message);
@@ -73,7 +88,10 @@ export default function Home() {
         setError("Unexpected error");
       }
     } finally {
-      setLoadingCountryDetails(false); // Reset loading state for country details
+      timer.current = window.setTimeout(() => {
+        setRefreshing(false);
+      }, PROGRESS_ANIMATION_TIME);
+      setLoadingCountryDetails(false);
     }
   };
 
@@ -108,14 +126,13 @@ export default function Home() {
         console.log("Unexpected error", err);
         setError("Unexpected error");
       }
-    } finally {
-      setLoading(false);
     }
   };
 
   const handleFetching = () => {
     setLoading(true);
     fetchCountries();
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -139,7 +156,13 @@ export default function Home() {
   };
 
   return (
-    <div style={{ padding: "10px" }}>
+    <div
+      style={{
+        padding: "10px",
+        maxWidth: "500px",
+        margin: "auto",
+      }}
+    >
       <Snackbar
         open={openSnackBar}
         autoHideDuration={3000}
@@ -169,12 +192,17 @@ export default function Home() {
         toggleFetch={handleFetching}
         buttonDisabled={loading}
       />
-      {loading || (loadingCountryDetails && <Skeleton />)}
-      {countryDetails.length > 0 ? (
+      {(loading || loadingCountryDetails) && <Skeleton />}
+      {countryDetails.length > 0 && !loading && !loadingCountryDetails ? (
         <div>
           <h2>Country Details</h2>
           {countryDetails.map((country, index) => (
-            <CountryDetail key={index} country={country} />
+            <CountryDetail
+              key={index}
+              country={country}
+              toggleAccordion={toggleAccordion}
+              expanded={expanded}
+            />
           ))}
         </div>
       ) : null}
@@ -187,7 +215,7 @@ export default function Home() {
           zIndex: "10",
         }}
       >
-        <Fade in={loading} unmountOnExit>
+        <Fade in={refreshing} unmountOnExit>
           <LinearProgress sx={{ height: "8px" }} />
         </Fade>
       </div>
