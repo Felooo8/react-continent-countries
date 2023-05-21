@@ -51,4 +51,6 @@ This will start the development server and launch the application in your defaul
 
 That's it! You have successfully pulled the code, compiled/assembled the project, run/deployed the solution, and learned how to use the Country Explorer application.
 
+[![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/Felooo8/react-continent-countries)
+
 Feel free to explore more countries and continents and enjoy your journey of discovering the world!
